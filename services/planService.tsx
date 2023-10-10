@@ -36,3 +36,10 @@ export const editPlan = async (plan: PlanDetail) => {
   await AsyncStorage.setItem(PLANS, JSON.stringify(plans));
   return plan;
 };
+
+export const deletePlan = async (planId: number) => {
+  const plans = await getPlans();
+  const newPlans = plans.filter((p) => p.id !== planId);
+
+  await AsyncStorage.setItem(PLANS, JSON.stringify(newPlans));
+};

@@ -15,10 +15,18 @@ export default function PlanFormMealList() {
   const { id = "new" } = useLocalSearchParams();
   const theme = useTheme();
   const style = makeStyles(theme.colors);
-  const { editPlanState } = useEditPlan();
+  const { editPlanState, setEditPlanState } = useEditPlan();
 
   const handleOnSelectMeal = (meal: Meal) => {
     router.push(`/plans/${id}/${meal.id}`);
+  };
+
+  const hanldeOnDeleteMeal = (id: number) => {
+    setEditPlanState((prev) => {
+      const newPlanDetails = { ...prev };
+      delete newPlanDetails.meals[id];
+      return newPlanDetails;
+    });
   };
 
   return (
@@ -34,7 +42,11 @@ export default function PlanFormMealList() {
       ItemSeparatorComponent={() => <View style={style.separator} />}
       data={Object.values(editPlanState.meals)}
       renderItem={({ item }) => (
-        <MealCard meal={item} onSelect={handleOnSelectMeal} />
+        <MealCard
+          meal={item}
+          onSelect={handleOnSelectMeal}
+          onDelete={hanldeOnDeleteMeal}
+        />
       )}
       keyExtractor={(item) => item.id.toString()}
       contentContainerStyle={style.flatListStyle}

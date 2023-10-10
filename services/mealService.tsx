@@ -37,3 +37,10 @@ export const editMeal = async (meal: Meal) => {
   await AsyncStorage.setItem(MEALS, JSON.stringify(meals));
   return meal;
 };
+
+export const deleteMeal = async (mealId: number) => {
+  const meals = await getMeals();
+  const newMeals = meals.filter((p) => p.id !== mealId);
+
+  await AsyncStorage.setItem(MEALS, JSON.stringify(newMeals));
+};

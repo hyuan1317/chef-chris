@@ -9,7 +9,7 @@ import {
 } from "react-native";
 import { useTheme, IconButton } from "react-native-paper";
 import { useEditPlan } from "@components/plans/EditPlanContext";
-import Tabs from "@components/Tabs";
+import Tabs from "@components/shared/Tabs";
 import { PlanDetail } from "@components/plans/types";
 import PlanFormMealList from "./PlanFormMealList";
 import PlanFormIngredientList from "./PlanFormIngredientList";

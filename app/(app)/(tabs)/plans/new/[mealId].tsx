@@ -28,7 +28,6 @@ const EditPlanMeal = () => {
       const targetIngredient = newPlanDetails.meals[
         Number(mealId)
       ].ingredients.find((i) => i.id === ingredId);
-      console.log(targetIngredient);
       targetIngredient.quantity += 1;
       return newPlanDetails;
     });

@@ -6,12 +6,14 @@ interface MealContextValue {
   meals: Meal[];
   createMeal: (meal: CreateMealReq) => Promise<Meal>;
   editMeal: (meal: Meal) => Promise<Meal>;
+  deleteMeal: (id: number) => Promise<void>;
 }
 
 const MealContext = createContext<MealContextValue>({
   meals: [],
   createMeal: undefined,
   editMeal: undefined,
+  deleteMeal: undefined,
 });
 
 export default function MealProvider({ children }) {
@@ -50,8 +52,17 @@ export default function MealProvider({ children }) {
     }
   };
 
+  const deleteMeal = async (id: number) => {
+    try {
+      await mealService.deleteMeal(id);
+      fetchMeals();
+    } catch {
+      // error
+    }
+  };
+
   return (
-    <MealContext.Provider value={{ meals, createMeal, editMeal }}>
+    <MealContext.Provider value={{ meals, createMeal, editMeal, deleteMeal }}>
       {children}
     </MealContext.Provider>
   );

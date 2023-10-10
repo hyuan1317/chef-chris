@@ -1,5 +1,5 @@
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { Ingredient } from "@components/meals/types";
+import { Ingredient } from "@components/ingredient/types";
 
 const INGREDIENTS = "INGREDIENTS";
 const INGREDIENT_ID_COUNT = "INGREDIENT_ID_COUNT";

@@ -11,7 +11,7 @@ import {
 import { TextInput, useTheme, IconButton } from "react-native-paper";
 import foodImg from "@assets/food.jpg";
 import { IngredientWithQty } from "@components/ingredient/types";
-import DismissKeyboardView from "@components/DismissKeyboardView";
+import DismissKeyboardView from "@components/shared/DismissKeyboardView";
 import { useEditMeal } from "@components/meals/EditMealContext";
 import { useMeal } from "@components/meals/MealContext";
 

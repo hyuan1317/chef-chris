@@ -6,12 +6,14 @@ interface PlanContextValue {
   plans: PlanDetail[];
   createPlan: (plan: CreatePlanReq) => Promise<PlanDetail>;
   editPlan: (plan: PlanDetail) => Promise<PlanDetail>;
+  deletePlan: (id: number) => Promise<void>;
 }
 
 const PlanContext = createContext<PlanContextValue>({
   plans: [],
   createPlan: undefined,
   editPlan: undefined,
+  deletePlan: undefined,
 });
 
 export default function PlanProvider({ children }) {
@@ -50,8 +52,17 @@ export default function PlanProvider({ children }) {
     }
   };
 
+  const deletePlan = async (planId: number) => {
+    try {
+      await planService.deletePlan(planId);
+      fetchPlans();
+    } catch {
+      // error
+    }
+  };
+
   return (
-    <PlanContext.Provider value={{ plans, createPlan, editPlan }}>
+    <PlanContext.Provider value={{ plans, createPlan, editPlan, deletePlan }}>
       {children}
     </PlanContext.Provider>
   );

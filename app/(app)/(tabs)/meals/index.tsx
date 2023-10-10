@@ -9,7 +9,7 @@ import { Meal } from "@components/meals/types";
 const Meals = () => {
   const theme = useTheme();
   const style = makeStyles(theme.colors);
-  const { meals } = useMeal();
+  const { meals, deleteMeal } = useMeal();
   const [searchInput, setSearchInput] = useState<string>("");
   const [extended, setExtended] = useState<boolean>(true);
 
@@ -40,7 +40,11 @@ const Meals = () => {
         ItemSeparatorComponent={() => <View style={style.separator} />}
         data={filterMeals()}
         renderItem={({ item }) => (
-          <MealCard meal={item} onSelect={handleOnSelectMeal} />
+          <MealCard
+            meal={item}
+            onSelect={handleOnSelectMeal}
+            onDelete={deleteMeal}
+          />
         )}
         keyExtractor={(meal) => meal.id.toString()}
       />
