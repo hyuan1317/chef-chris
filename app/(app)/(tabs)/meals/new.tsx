@@ -10,7 +10,7 @@ import {
 } from "react-native";
 import { TextInput, useTheme, IconButton } from "react-native-paper";
 import foodImg from "@assets/food.jpg";
-import { MealIngredient } from "@components/meals/types";
+import { IngredientWithQty } from "@components/ingredient/types";
 import DismissKeyboardView from "@components/DismissKeyboardView";
 import { useEditMeal } from "@components/meals/EditMealContext";
 import { useMeal } from "@components/meals/MealContext";
@@ -19,17 +19,17 @@ const NewMeal = () => {
   const theme = useTheme();
   const style = makeStyles(theme.colors);
   const { createMeal } = useMeal();
-  const { mealDetail, setMealDetail } = useEditMeal();
+  const { editMealState, setEditMealState } = useEditMeal();
 
   const handleOnChangeName = (text) => {
-    setMealDetail((prev) => ({
+    setEditMealState((prev) => ({
       ...prev,
       name: text,
     }));
   };
 
   const handleOnQtyChange = (ingredId) => (text) => {
-    setMealDetail((prev) => {
+    setEditMealState((prev) => {
       const newMealDetails = { ...prev };
       newMealDetails.ingredients[ingredId].quantity = Number(text);
       return newMealDetails;
@@ -37,7 +37,7 @@ const NewMeal = () => {
   };
 
   const handleOnPlusQty = (ingredId) => () => {
-    setMealDetail((prev) => {
+    setEditMealState((prev) => {
       const newMealDetails = { ...prev };
       newMealDetails.ingredients[ingredId].quantity += 1;
       return newMealDetails;
@@ -45,8 +45,8 @@ const NewMeal = () => {
   };
 
   const handleOnMinusQty = (ingredId) => () => {
-    if (mealDetail.ingredients[ingredId].quantity >= 2) {
-      setMealDetail((prev) => {
+    if (editMealState.ingredients[ingredId].quantity >= 2) {
+      setEditMealState((prev) => {
         const newMealDetails = { ...prev };
         newMealDetails.ingredients[ingredId].quantity -= 1;
         return newMealDetails;
@@ -55,7 +55,7 @@ const NewMeal = () => {
   };
 
   const handleOnCreate = async () => {
-    const { name, ingredients } = mealDetail;
+    const { name, ingredients } = editMealState;
     const meal = {
       name,
       ingredients: Object.values(ingredients),
@@ -68,7 +68,7 @@ const NewMeal = () => {
     }
   };
 
-  const renderIngredientRow = (ingredient: MealIngredient) => (
+  const renderIngredientRow = (ingredient: IngredientWithQty) => (
     <View style={style.ingredientRow}>
       <Text style={style.ingredientTitle}>{ingredient.name}</Text>
       <View style={style.ingredientContainer}>
@@ -98,7 +98,7 @@ const NewMeal = () => {
             <TextInput
               label="Name"
               mode="outlined"
-              value={mealDetail.name}
+              value={editMealState.name}
               onChangeText={handleOnChangeName}
               style={style.nameInput}
             />
@@ -117,7 +117,7 @@ const NewMeal = () => {
           </Link>
         }
         ItemSeparatorComponent={() => <View style={style.separator} />}
-        data={Object.values(mealDetail.ingredients)}
+        data={Object.values(editMealState.ingredients)}
         renderItem={({ item }) => renderIngredientRow(item)}
         keyExtractor={(item) => item.id.toString()}
       />

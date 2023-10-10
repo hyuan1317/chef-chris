@@ -1,29 +1,27 @@
 import React, { createContext, useContext, useState } from "react";
-import { MealDetails } from "./types";
-import { useMeal } from "./MealContext";
+import { EditMealState } from "./types";
 
 interface EditMealContextValue {
-  mealDetail: MealDetails;
-  setMealDetail: React.Dispatch<React.SetStateAction<MealDetails>>;
+  editMealState: EditMealState;
+  setEditMealState: React.Dispatch<React.SetStateAction<EditMealState>>;
 }
 
 const EditMealContext = createContext<EditMealContextValue>({
-  mealDetail: {
+  editMealState: {
     name: "",
     ingredients: {},
   },
-  setMealDetail: undefined,
+  setEditMealState: undefined,
 });
 
 export default function EditMealProvider({ children }) {
-  const [mealDetail, setMealDetail] = useState<MealDetails>({
+  const [editMealState, setEditMealState] = useState<EditMealState>({
     name: "",
     ingredients: {},
   });
-  const {} = useMeal();
 
   return (
-    <EditMealContext.Provider value={{ mealDetail, setMealDetail }}>
+    <EditMealContext.Provider value={{ editMealState, setEditMealState }}>
       {children}
     </EditMealContext.Provider>
   );

@@ -1,24 +1,24 @@
 import { useState } from "react";
 import { View, StyleSheet, SafeAreaView, FlatList } from "react-native";
-import { router } from "expo-router";
-import { useTheme, Searchbar, AnimatedFAB } from "react-native-paper";
-import { usePlan } from "@components/plans/PlanContext";
-import PlanCard from "@components/plans/PlanCard";
+import { useTheme, Searchbar } from "react-native-paper";
+import MealCard from "@components/meals/MealCard";
+import { useMeal } from "@components/meals/MealContext";
+import { Meal } from "./types";
 
-const Plans = () => {
+interface Props {
+  onAdd: (meal: Meal) => void;
+}
+
+const AddMealView = (props: Props) => {
+  const { onAdd } = props;
   const theme = useTheme();
   const style = makeStyles(theme.colors);
-  const { plans } = usePlan();
+  const { meals } = useMeal();
   const [searchInput, setSearchInput] = useState<string>("");
-  const [extended, setExtended] = useState<boolean>(true);
 
-  const filterPlans = () => {
+  const filterMeals = () => {
     const lowerCaseSearch = searchInput.toLowerCase();
-    return plans.filter((p) => p.name.toLowerCase().includes(lowerCaseSearch));
-  };
-
-  const handleOnAddMeal = () => {
-    router.push("/plans/new");
+    return meals.filter((m) => m.name.toLowerCase().includes(lowerCaseSearch));
   };
 
   return (
@@ -33,25 +33,15 @@ const Plans = () => {
       <FlatList
         contentContainerStyle={style.body}
         ItemSeparatorComponent={() => <View style={style.separator} />}
-        data={filterPlans()}
-        renderItem={({ item }) => <PlanCard plan={item} />}
-        keyExtractor={(plan) => plan.id.toString()}
-      />
-      <AnimatedFAB
-        icon={"plus"}
-        label={"New"}
-        extended={extended}
-        onPress={handleOnAddMeal}
-        visible={true}
-        animateFrom={"right"}
-        iconMode="dynamic"
-        style={style.fabStyle}
+        data={filterMeals()}
+        renderItem={({ item }) => <MealCard onSelect={onAdd} meal={item} />}
+        keyExtractor={(meal) => meal.id.toString()}
       />
     </SafeAreaView>
   );
 };
 
-export default Plans;
+export default AddMealView;
 
 const makeStyles = (colors: any) =>
   StyleSheet.create({
@@ -71,10 +61,7 @@ const makeStyles = (colors: any) =>
     },
     separator: {
       height: 10,
-    },
-    fabStyle: {
-      bottom: 16,
-      right: 16,
-      position: "absolute",
+      // borderColor: colors.outlineVariant,
+      // borderBottomWidth: 2,
     },
   });

@@ -9,16 +9,19 @@ import {
 } from "react-native";
 import { useTheme, Searchbar } from "react-native-paper";
 import { router } from "expo-router";
-import { useEditMeal } from "@components/meals/EditMealContext";
-import IngredientCard from "@components/meals/ingredient/IngredientCard";
-import { useIngredient } from "@components/meals/ingredient/IngredientContext";
-import { Ingredient } from "@components/meals/types";
+import IngredientCard from "@components/ingredient/IngredientCard";
+import { useIngredient } from "@components/ingredient/IngredientContext";
+import { Ingredient } from "@components/ingredient/types";
 
-const AddIngredient = () => {
+interface Props {
+  onSelect: (item: Ingredient) => void;
+}
+
+const AddIngredient = (props: Props) => {
+  const { onSelect } = props;
   const theme = useTheme();
   const style = makeStyles(theme.colors);
   const { ingredients, createIngredient } = useIngredient();
-  const { setMealDetail } = useEditMeal();
   const [searchInput, setSearchInput] = useState<string>("");
 
   const filterIngredients = () => {
@@ -29,27 +32,13 @@ const AddIngredient = () => {
   };
 
   const handleOnSelect = (item: Ingredient) => {
-    setMealDetail((prev) => {
-      const newMealDetails = { ...prev };
-      newMealDetails.ingredients[item.id] = {
-        ...item,
-        quantity: 1,
-      };
-      return newMealDetails;
-    });
+    onSelect(item);
     router.back();
   };
 
   const handleOnAdd = async () => {
     const newIngred = await createIngredient(searchInput);
-    setMealDetail((prev) => {
-      const newMealDetails = { ...prev };
-      newMealDetails.ingredients[newIngred.id] = {
-        ...newIngred,
-        quantity: 1,
-      };
-      return newMealDetails;
-    });
+    onSelect(newIngred);
     router.back();
   };
 

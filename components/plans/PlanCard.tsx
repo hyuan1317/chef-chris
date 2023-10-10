@@ -1,26 +1,28 @@
 import { TouchableOpacity, StyleSheet } from "react-native";
 import { Card } from "react-native-paper";
-
-export interface Plan {
-  id: number;
-  name: string;
-  time: string;
-}
+import { Link } from "expo-router";
+import { PlanDetail } from "./types";
 
 interface IPlanCard {
-  plan: Plan;
+  plan: PlanDetail;
 }
 
 const PlanCard = (props: IPlanCard) => {
   const {
-    plan: { name, time },
+    plan: { id, name, time },
   } = props;
+
+  const formatTime = (time: string) => {
+    return time.split("T")[0];
+  };
   return (
-    <TouchableOpacity>
-      <Card>
-        <Card.Title title={name} subtitle={time} />
-      </Card>
-    </TouchableOpacity>
+    <Link href={`/plans/${id}`} asChild>
+      <TouchableOpacity>
+        <Card>
+          <Card.Title title={name} subtitle={formatTime(time)} />
+        </Card>
+      </TouchableOpacity>
+    </Link>
   );
 };
 

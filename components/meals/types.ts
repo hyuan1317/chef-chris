@@ -1,21 +1,14 @@
+import { IngredientWithQty } from "../ingredient/types";
 export interface Meal {
   id: number;
   name: string;
-  ingredients: MealIngredient[];
+  ingredients: IngredientWithQty[];
 }
 
-export type MealIngredient = Ingredient & {
-  quantity: number;
-};
-
-export interface Ingredient {
-  id: number;
+export interface EditMealState {
+  id?: number;
   name: string;
-}
-
-export interface MealDetails {
-  name: string;
-  ingredients: Record<number, MealIngredient>; // id: ingredient
+  ingredients: Record<number, IngredientWithQty>; // id: ingredient
 }
 
 export type CreateMealReq = Omit<Meal, "id">;

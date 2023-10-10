@@ -1,6 +1,6 @@
 import { TouchableOpacity } from "react-native";
 import { StyleSheet, Text } from "react-native";
-import { Ingredient } from "../types";
+import { Ingredient } from "../meals/types";
 
 interface IIngredientCard {
   ingredient: Ingredient;

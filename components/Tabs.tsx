@@ -4,7 +4,7 @@ import { useTheme } from "react-native-paper";
 
 interface ITab {
   name: string;
-  content: React.ReactNode;
+  content: React.ElementType;
 }
 
 interface FromTabs {
@@ -18,6 +18,7 @@ const Tabs = ({ children }) => {
   const theme = useTheme();
   const style = makeStyles(theme.colors);
 
+  const TabElement = activeTab?.content;
   return (
     <View style={style.wrapper}>
       <View style={style.tabsContainer}>
@@ -29,7 +30,7 @@ const Tabs = ({ children }) => {
           });
         })}
       </View>
-      <View style={style.body}>{activeTab?.content}</View>
+      <View style={style.body}>{TabElement && <TabElement />}</View>
     </View>
   );
 };
@@ -93,7 +94,6 @@ const makeStyles = (colors: any) =>
     },
     body: {
       flex: 1,
-      padding: 8,
     },
   });
 

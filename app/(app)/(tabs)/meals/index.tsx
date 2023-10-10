@@ -4,6 +4,7 @@ import { useTheme, Searchbar, AnimatedFAB } from "react-native-paper";
 import MealCard from "@components/meals/MealCard";
 import { useMeal } from "@components/meals/MealContext";
 import { router } from "expo-router";
+import { Meal } from "@components/meals/types";
 
 const Meals = () => {
   const theme = useTheme();
@@ -18,7 +19,11 @@ const Meals = () => {
   };
 
   const handleOnAddMeal = () => {
-    router.push("/meals/newMeal");
+    router.push("/meals/new");
+  };
+
+  const handleOnSelectMeal = (meal: Meal) => {
+    router.push(`/meals/${meal.id}`);
   };
 
   return (
@@ -34,7 +39,9 @@ const Meals = () => {
         contentContainerStyle={style.body}
         ItemSeparatorComponent={() => <View style={style.separator} />}
         data={filterMeals()}
-        renderItem={({ item }) => <MealCard meal={item} />}
+        renderItem={({ item }) => (
+          <MealCard meal={item} onSelect={handleOnSelectMeal} />
+        )}
         keyExtractor={(meal) => meal.id.toString()}
       />
       <AnimatedFAB

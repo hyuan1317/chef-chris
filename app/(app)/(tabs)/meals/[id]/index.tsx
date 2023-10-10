@@ -7,36 +7,36 @@ import {
   Image,
   TouchableOpacity,
   FlatList,
-  TextInput as RNTextInput,
 } from "react-native";
 import { TextInput, useTheme, IconButton } from "react-native-paper";
 import { useMeal } from "@components/meals/MealContext";
 import foodImg from "@assets/food.jpg";
-import { Meal, MealIngredient, MealDetails } from "@components/meals/types";
-import DismissKeyboardView from "@components/DismissKeyboardView";
+import { Meal, EditMealState } from "@components/meals/types";
+import { IngredientWithQty } from "@components/ingredient/types";
 import { useEditMeal } from "@components/meals/EditMealContext";
+import IngredientRow from "@components/ingredient/IngredientRow";
 
 const EditMeal = () => {
   const { id } = useLocalSearchParams();
   const theme = useTheme();
   const style = makeStyles(theme.colors);
   const { meals, editMeal } = useMeal();
-  const { mealDetail, setMealDetail } = useEditMeal();
+  const { editMealState, setEditMealState } = useEditMeal();
 
   useEffect(() => {
     const meal = meals.find((m) => m.id === Number(id));
-    setMealDetail(parseMeal(meal));
+    setEditMealState(parseMeal(meal));
   }, []);
 
   const handleOnChangeName = (text) => {
-    setMealDetail((prev) => ({
+    setEditMealState((prev) => ({
       ...prev,
       name: text,
     }));
   };
 
   const handleOnQtyChange = (ingredId) => (text) => {
-    setMealDetail((prev) => {
+    setEditMealState((prev) => {
       const newMealDetails = { ...prev };
       newMealDetails.ingredients[ingredId].quantity = Number(text);
       return newMealDetails;
@@ -44,7 +44,7 @@ const EditMeal = () => {
   };
 
   const handleOnPlusQty = (ingredId) => () => {
-    setMealDetail((prev) => {
+    setEditMealState((prev) => {
       const newMealDetails = { ...prev };
       newMealDetails.ingredients[ingredId].quantity += 1;
       return newMealDetails;
@@ -52,8 +52,8 @@ const EditMeal = () => {
   };
 
   const handleOnMinusQty = (ingredId) => () => {
-    if (mealDetail.ingredients[ingredId].quantity >= 2) {
-      setMealDetail((prev) => {
+    if (editMealState.ingredients[ingredId].quantity >= 2) {
+      setEditMealState((prev) => {
         const newMealDetails = { ...prev };
         newMealDetails.ingredients[ingredId].quantity -= 1;
         return newMealDetails;
@@ -62,9 +62,9 @@ const EditMeal = () => {
   };
 
   const handleOnSave = async () => {
-    const { name, ingredients } = mealDetail;
+    const { id, name, ingredients } = editMealState;
     const meal = {
-      id: Number(id),
+      id,
       name,
       ingredients: Object.values(ingredients),
     };
@@ -76,29 +76,20 @@ const EditMeal = () => {
     }
   };
 
-  const renderIngredientRow = (ingredient: MealIngredient) => (
-    <View style={style.ingredientRow}>
-      <Text style={style.ingredientTitle}>{ingredient.name}</Text>
-      <View style={style.ingredientContainer}>
-        <TouchableOpacity onPress={handleOnPlusQty(ingredient.id)}>
-          <IconButton style={style.ingredientOperator} icon="plus" size={20} />
-        </TouchableOpacity>
-        <RNTextInput
-          style={style.ingredientQty}
-          inputMode="decimal"
-          keyboardType="number-pad"
-          value={ingredient.quantity.toString()}
-          onChangeText={handleOnQtyChange(ingredient.id)}
-        />
-        <TouchableOpacity onPress={handleOnMinusQty(ingredient.id)}>
-          <IconButton style={style.ingredientOperator} icon="minus" size={20} />
-        </TouchableOpacity>
-      </View>
-    </View>
-  );
+  const renderIngredientRow = (ingredient: IngredientWithQty) => {
+    const { id } = ingredient;
+    return (
+      <IngredientRow
+        ingredient={ingredient}
+        onPlus={handleOnPlusQty(id)}
+        onMinus={handleOnMinusQty(id)}
+        onQtyChange={handleOnQtyChange(id)}
+      />
+    );
+  };
 
   return (
-    <DismissKeyboardView style={style.wrapper}>
+    <View style={style.wrapper}>
       <FlatList
         ListHeaderComponent={
           <View style={style.header}>
@@ -106,14 +97,14 @@ const EditMeal = () => {
             <TextInput
               label="Name"
               mode="outlined"
-              value={mealDetail.name}
+              value={editMealState.name}
               onChangeText={handleOnChangeName}
               style={style.nameInput}
             />
           </View>
         }
         ListFooterComponent={
-          <Link href="/meals/addIngredient" asChild>
+          <Link href={`/meals/${id}/addIngredient`} asChild>
             <TouchableOpacity style={style.addIngredientButton}>
               <IconButton
                 style={style.addIngredientIcon}
@@ -125,16 +116,17 @@ const EditMeal = () => {
           </Link>
         }
         ItemSeparatorComponent={() => <View style={style.separator} />}
-        data={Object.values(mealDetail.ingredients)}
+        data={Object.values(editMealState.ingredients)}
         renderItem={({ item }) => renderIngredientRow(item)}
         keyExtractor={(item) => item.id.toString()}
+        contentContainerStyle={style.flatListStyle}
       />
       <View style={style.footer}>
         <TouchableOpacity style={style.updateButton} onPress={handleOnSave}>
           <Text style={style.updateText}>Save</Text>
         </TouchableOpacity>
       </View>
-    </DismissKeyboardView>
+    </View>
   );
 };
 
@@ -144,6 +136,9 @@ const makeStyles = (colors: any) =>
   StyleSheet.create({
     wrapper: {
       flex: 1,
+    },
+    flatListStyle: {
+      flexGrow: 1,
     },
     separator: {
       borderColor: colors.outlineVariant,
@@ -157,34 +152,6 @@ const makeStyles = (colors: any) =>
       padding: 12,
       backgroundColor: colors.background,
       marginBottom: 12,
-    },
-    ingredientRow: {
-      flexDirection: "row",
-      alignItems: "center",
-      padding: 12,
-      backgroundColor: colors.background,
-      justifyContent: "space-between",
-    },
-    ingredientContainer: {
-      flexDirection: "row",
-      alignItems: "center",
-    },
-    ingredientTitle: {
-      fontFamily: "Inter_900Black",
-    },
-    ingredientQty: {
-      borderColor: colors.outlineVariant,
-      borderWidth: 1,
-      width: 40,
-      height: 40,
-      textAlign: "center",
-    },
-    ingredientOperator: {
-      borderColor: colors.outlineVariant,
-      borderWidth: 1,
-      width: 40,
-      height: 40,
-      borderRadius: 0,
     },
     addIngredientButton: {
       height: 40,
@@ -224,8 +191,9 @@ const makeStyles = (colors: any) =>
     },
   });
 
-const parseMeal = (meal: Meal): MealDetails => {
-  const details: MealDetails = {
+const parseMeal = (meal: Meal): EditMealState => {
+  const details: EditMealState = {
+    id: meal.id,
     name: meal.name,
     ingredients: {},
   };

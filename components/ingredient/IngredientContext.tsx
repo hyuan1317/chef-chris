@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import * as ingredientService from "@services/ingredientService";
-import { Ingredient } from "../types";
+import { Ingredient } from "../meals/types";
 
 interface IngredientContextValue {
   ingredients: Ingredient[];
