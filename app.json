@@ -8,8 +8,7 @@
     "userInterfaceStyle": "light",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#62A2C7"
+      "resizeMode": "cover"
     },
     "scheme": "chef-chris",
     "assetBundlePatterns": ["**/*"],
