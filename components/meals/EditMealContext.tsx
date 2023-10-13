@@ -23,9 +23,8 @@ export default function EditMealProvider({ children }) {
     useState<EditMealState>(initialEditMealState);
 
   const reset = () => {
-    // instead of using variable 'initialEditMealState', hard reset with whole new obj
-    // due to the way we manipulate ingredients: if we reset with initialEditMealState, initialEditMealState.ingredients would always be the same obj
-    // might need to change adjust later
+    // hard reset ingredients with new obj
+    // due to the way we manipulate data: nested obj won't be reset (ingredients) if we use the same initial variable
     setEditMealState({
       name: "",
       ingredients: {},
