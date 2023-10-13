@@ -26,7 +26,14 @@ export default function EditPlanProvider({ children }) {
     useState<EditPlanState>(initialEditPlanState);
 
   const reset = () => {
-    setEditPlanState(initialEditPlanState);
+    // instead of using variable 'initialEditPlanState', hard reset with whole new obj
+    // due to the way we manipulate ingredients: if we reset with initialEditMealState, initialEditMealState.ingredients would always be the same obj
+    // might need to change adjust later
+    setEditPlanState({
+      ...initialEditPlanState,
+      meals: {},
+      ingredients: {},
+    });
   };
 
   return (
