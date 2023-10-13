@@ -4,6 +4,7 @@ import {
   useFonts,
   Inter_900Black,
   Inter_600SemiBold,
+  Inter_400Regular,
 } from "@expo-google-fonts/inter";
 import { Stack } from "expo-router";
 
@@ -13,6 +14,7 @@ export default function AppLayout() {
   const [fontsLoaded, fontError] = useFonts({
     Inter_900Black,
     Inter_600SemiBold,
+    Inter_400Regular,
   });
 
   useEffect(() => {
@@ -29,7 +31,7 @@ export default function AppLayout() {
   return (
     <Stack>
       <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-      <Stack.Screen name="modal" options={{ presentation: "modal" }} />
+      <Stack.Screen name="(groceryList)/[id]" options={{ headerShown: true }} />
     </Stack>
   );
 }

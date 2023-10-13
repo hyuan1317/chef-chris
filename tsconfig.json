@@ -4,7 +4,8 @@
     "paths": {
       "@components/*": ["components/*"],
       "@assets/*": ["assets/*"],
-      "@services/*": ["services/*"]
+      "@services/*": ["services/*"],
+      "@storages/*": ["storages/*"]
     }
   },
   "extends": "expo/tsconfig.base"

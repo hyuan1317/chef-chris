@@ -1,12 +1,12 @@
 import { router } from "expo-router";
 import {
   View,
-  Text,
   StyleSheet,
   TouchableOpacity,
   TextInput,
   SafeAreaView,
 } from "react-native";
+import CCText from "@components/shared/CCText";
 import { useTheme, IconButton } from "react-native-paper";
 import { useEditPlan } from "@components/plans/EditPlanContext";
 import Tabs from "@components/shared/Tabs";
@@ -38,7 +38,7 @@ const PlanForm = (props: PlanFormProps) => {
   };
 
   const handleOnSubmit = async () => {
-    const { id, name, time, meals, ingredients } = editPlanState;
+    const { id, meals, ingredients } = editPlanState;
 
     const formatMeals = Object.values(meals).map((m) => {
       const formatMeal: Meal = {
@@ -50,9 +50,8 @@ const PlanForm = (props: PlanFormProps) => {
     });
 
     const plan = {
+      ...editPlanState,
       id,
-      name,
-      time,
       meals: formatMeals,
       ingredients: Object.values(ingredients),
     };
@@ -88,7 +87,7 @@ const PlanForm = (props: PlanFormProps) => {
       </Tabs>
       <View style={style.footer}>
         <TouchableOpacity style={style.updateButton} onPress={handleOnSubmit}>
-          <Text style={style.updateText}>{submitTItle}</Text>
+          <CCText style={style.updateText}>{submitTItle}</CCText>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

@@ -1,10 +1,6 @@
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  TextInput,
-  StyleSheet,
-} from "react-native";
+import { View, TouchableOpacity, TextInput, StyleSheet } from "react-native";
+import CCText from "@components/shared/CCText";
+import SwipeableRow, { SwipableAction } from "@components/shared/SwipeableRow";
 import { IconButton, useTheme } from "react-native-paper";
 import { IngredientWithQty } from "../ingredient/types";
 
@@ -13,32 +9,60 @@ interface Props {
   onPlus: () => void;
   onMinus: () => void;
   onQtyChange: (text: string) => void;
+  onDelete: (id: number) => void;
 }
 
 const IngredientRow = (props: Props) => {
-  const { ingredient, onPlus, onMinus, onQtyChange } = props;
+  const {
+    ingredient: { id, name, quantity },
+    onPlus,
+    onMinus,
+    onQtyChange,
+    onDelete,
+  } = props;
   const theme = useTheme();
   const style = makeStyles(theme.colors);
 
+  const actions: SwipableAction[] = [
+    {
+      text: "Delete",
+      backgroundColor: "#DD2C00",
+      icon: "delete",
+      onPress: () => {
+        onDelete(id);
+      },
+    },
+  ];
+
   return (
-    <View style={style.ingredientRow}>
-      <Text style={style.ingredientTitle}>{ingredient.name}</Text>
-      <View style={style.ingredientContainer}>
-        <TouchableOpacity onPress={onPlus}>
-          <IconButton style={style.ingredientOperator} icon="plus" size={20} />
-        </TouchableOpacity>
-        <TextInput
-          style={style.ingredientQty}
-          inputMode="decimal"
-          keyboardType="number-pad"
-          value={ingredient.quantity.toString()}
-          onChangeText={onQtyChange}
-        />
-        <TouchableOpacity onPress={onMinus}>
-          <IconButton style={style.ingredientOperator} icon="minus" size={20} />
-        </TouchableOpacity>
+    <SwipeableRow actions={actions}>
+      <View style={style.ingredientRow}>
+        <CCText style={style.ingredientTitle}>{name}</CCText>
+        <View style={style.ingredientContainer}>
+          <TouchableOpacity onPress={onPlus}>
+            <IconButton
+              style={style.ingredientOperator}
+              icon="plus"
+              size={20}
+            />
+          </TouchableOpacity>
+          <TextInput
+            style={style.ingredientQty}
+            inputMode="decimal"
+            keyboardType="number-pad"
+            value={quantity.toString()}
+            onChangeText={onQtyChange}
+          />
+          <TouchableOpacity onPress={onMinus}>
+            <IconButton
+              style={style.ingredientOperator}
+              icon="minus"
+              size={20}
+            />
+          </TouchableOpacity>
+        </View>
       </View>
-    </View>
+    </SwipeableRow>
   );
 };
 

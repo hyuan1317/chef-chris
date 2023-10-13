@@ -5,8 +5,8 @@ import {
   SafeAreaView,
   FlatList,
   TouchableOpacity,
-  Text,
 } from "react-native";
+import CCText from "@components/shared/CCText";
 import { useTheme, Searchbar } from "react-native-paper";
 import { router } from "expo-router";
 import IngredientCard from "@components/ingredient/IngredientCard";
@@ -62,7 +62,7 @@ const AddIngredient = (props: Props) => {
       />
       <View style={style.footer}>
         <TouchableOpacity style={style.addButton} onPress={handleOnAdd}>
-          <Text style={style.addText}>Add</Text>
+          <CCText style={style.addText}>Add</CCText>
         </TouchableOpacity>
       </View>
     </SafeAreaView>

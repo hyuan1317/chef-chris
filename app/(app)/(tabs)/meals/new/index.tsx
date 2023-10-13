@@ -1,25 +1,30 @@
 import { Link, router } from "expo-router";
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   TouchableOpacity,
   FlatList,
   TextInput as RNTextInput,
 } from "react-native";
+import CCText from "@components/shared/CCText";
 import { TextInput, useTheme, IconButton } from "react-native-paper";
 import foodImg from "@assets/food.jpg";
 import { IngredientWithQty } from "@components/ingredient/types";
 import DismissKeyboardView from "@components/shared/DismissKeyboardView";
 import { useEditMeal } from "@components/meals/EditMealContext";
 import { useMeal } from "@components/meals/MealContext";
+import { useEffect } from "react";
 
 const NewMeal = () => {
   const theme = useTheme();
   const style = makeStyles(theme.colors);
   const { createMeal } = useMeal();
-  const { editMealState, setEditMealState } = useEditMeal();
+  const { editMealState, setEditMealState, reset } = useEditMeal();
+
+  useEffect(() => {
+    return reset;
+  }, []);
 
   const handleOnChangeName = (text) => {
     setEditMealState((prev) => ({
@@ -70,7 +75,7 @@ const NewMeal = () => {
 
   const renderIngredientRow = (ingredient: IngredientWithQty) => (
     <View style={style.ingredientRow}>
-      <Text style={style.ingredientTitle}>{ingredient.name}</Text>
+      <CCText style={style.ingredientTitle}>{ingredient.name}</CCText>
       <View style={style.ingredientContainer}>
         <TouchableOpacity onPress={handleOnPlusQty(ingredient.id)}>
           <IconButton style={style.ingredientOperator} icon="plus" size={20} />
@@ -105,14 +110,14 @@ const NewMeal = () => {
           </View>
         }
         ListFooterComponent={
-          <Link href="/meals/addIngredient" asChild>
+          <Link href="/meals/new/addIngredient" asChild>
             <TouchableOpacity style={style.addIngredientButton}>
               <IconButton
                 style={style.addIngredientIcon}
                 icon="plus"
                 size={28}
               />
-              <Text style={style.addIngredientText}>Add</Text>
+              <CCText style={style.addIngredientText}>Add</CCText>
             </TouchableOpacity>
           </Link>
         }
@@ -123,7 +128,7 @@ const NewMeal = () => {
       />
       <View style={style.footer}>
         <TouchableOpacity style={style.updateButton} onPress={handleOnCreate}>
-          <Text style={style.updateText}>Create</Text>
+          <CCText style={style.updateText}>Create</CCText>
         </TouchableOpacity>
       </View>
     </DismissKeyboardView>

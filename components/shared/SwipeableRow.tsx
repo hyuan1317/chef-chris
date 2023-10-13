@@ -1,6 +1,7 @@
 import Swipeable from "react-native-gesture-handler/Swipeable";
 import { RectButton } from "react-native-gesture-handler";
-import { Animated, StyleSheet, Text, View } from "react-native";
+import { Animated, StyleSheet, View } from "react-native";
+import CCText from "./CCText";
 import { IconButton } from "react-native-paper";
 
 interface Props {
@@ -53,7 +54,7 @@ const SwipeableRow = (props: Props) => {
               size={24}
             />
           )}
-          <Text style={[styles.actionText, { color }]}>{text}</Text>
+          <CCText style={[styles.actionText, { color }]}>{text}</CCText>
         </RectButton>
       </Animated.View>
     );

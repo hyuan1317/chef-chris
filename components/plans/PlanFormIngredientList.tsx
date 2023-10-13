@@ -1,11 +1,6 @@
 import { Link, useLocalSearchParams } from "expo-router";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-} from "react-native";
+import { View, TouchableOpacity, FlatList, StyleSheet } from "react-native";
+import CCText from "@components/shared/CCText";
 import { useTheme, IconButton } from "react-native-paper";
 import { useEditPlan } from "@components/plans/EditPlanContext";
 import IngredientRow from "@components/ingredient/IngredientRow";
@@ -43,6 +38,14 @@ export default function PlanFormIngredientList() {
     }
   };
 
+  const handleOnDelete = (ingredId) => () => {
+    setEditPlanState((prev) => {
+      const newPlanDetails = { ...prev };
+      delete newPlanDetails.ingredients[ingredId];
+      return newPlanDetails;
+    });
+  };
+
   const renderIngredientRow = (ingredient: IngredientWithQty) => {
     const { id } = ingredient;
     return (
@@ -51,6 +54,7 @@ export default function PlanFormIngredientList() {
         onPlus={handleOnPlusQty(id)}
         onMinus={handleOnMinusQty(id)}
         onQtyChange={handleOnQtyChange(id)}
+        onDelete={handleOnDelete(id)}
       />
     );
   };
@@ -61,7 +65,7 @@ export default function PlanFormIngredientList() {
         <Link href={`/plans/${id}/addIngredient`} asChild>
           <TouchableOpacity style={style.addButton}>
             <IconButton style={style.addIcon} icon="plus" size={28} />
-            <Text style={style.addText}>Add</Text>
+            <CCText style={style.addText}>Add</CCText>
           </TouchableOpacity>
         </Link>
       }

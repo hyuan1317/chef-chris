@@ -1,6 +1,7 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import { PlanDetail, CreatePlanReq } from "./types";
 import * as planService from "@services/planService";
+import { deleteCheckListById } from "@storages/checkListStorage";
 
 interface PlanContextValue {
   plans: PlanDetail[];
@@ -55,6 +56,7 @@ export default function PlanProvider({ children }) {
   const deletePlan = async (planId: number) => {
     try {
       await planService.deletePlan(planId);
+      deleteCheckListById(planId);
       fetchPlans();
     } catch {
       // error

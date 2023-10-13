@@ -5,6 +5,7 @@ export interface PlanSummary {
   id: number;
   name: string;
   time: string;
+  completed: boolean;
 }
 
 export type PlanDetail = PlanSummary & {
@@ -18,6 +19,7 @@ export interface EditPlanState {
   id?: number;
   name: string;
   time: string;
+  completed: boolean;
   meals: Record<number, Meal>;
   ingredients: Record<number, IngredientWithQty>;
 }

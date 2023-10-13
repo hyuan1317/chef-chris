@@ -6,13 +6,15 @@ import { useEffect } from "react";
 
 const NewPlan = () => {
   const { createPlan } = usePlan();
-  const { setEditPlanState } = useEditPlan();
+  const { setEditPlanState, reset } = useEditPlan();
 
   useEffect(() => {
     setEditPlanState((prev) => ({
       ...prev,
       name: "New Plan",
     }));
+
+    return reset;
   }, []);
 
   const handleOnCreate = async (plan: PlanDetail) => {

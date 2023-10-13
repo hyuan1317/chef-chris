@@ -50,6 +50,17 @@ const EditPlanMeal = () => {
     }
   };
 
+  const handleOnDelete = (ingredId) => () => {
+    setEditPlanState((prev) => {
+      const newPlanDetails = { ...prev };
+      const targetMeal = newPlanDetails.meals[Number(mealId)];
+      targetMeal.ingredients = targetMeal.ingredients.filter(
+        (i) => i.id !== ingredId
+      );
+      return newPlanDetails;
+    });
+  };
+
   const renderIngredientRow = (ingredient: IngredientWithQty) => {
     const { id } = ingredient;
     return (
@@ -58,6 +69,7 @@ const EditPlanMeal = () => {
         onPlus={handleOnPlusQty(id)}
         onMinus={handleOnMinusQty(id)}
         onQtyChange={handleOnQtyChange(id)}
+        onDelete={handleOnDelete(id)}
       />
     );
   };

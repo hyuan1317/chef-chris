@@ -2,12 +2,12 @@ import { useEffect } from "react";
 import { Link, useLocalSearchParams, router } from "expo-router";
 import {
   View,
-  Text,
   StyleSheet,
   Image,
   TouchableOpacity,
   FlatList,
 } from "react-native";
+import CCText from "@components/shared/CCText";
 import { TextInput, useTheme, IconButton } from "react-native-paper";
 import { useMeal } from "@components/meals/MealContext";
 import foodImg from "@assets/food.jpg";
@@ -21,11 +21,13 @@ const EditMeal = () => {
   const theme = useTheme();
   const style = makeStyles(theme.colors);
   const { meals, editMeal } = useMeal();
-  const { editMealState, setEditMealState } = useEditMeal();
+  const { editMealState, setEditMealState, reset } = useEditMeal();
 
   useEffect(() => {
     const meal = meals.find((m) => m.id === Number(id));
     setEditMealState(parseMeal(meal));
+
+    return reset;
   }, []);
 
   const handleOnChangeName = (text) => {
@@ -61,6 +63,14 @@ const EditMeal = () => {
     }
   };
 
+  const handleOnDelete = (ingredId) => () => {
+    setEditMealState((prev) => {
+      const newMealDetails = { ...prev };
+      delete newMealDetails.ingredients[ingredId];
+      return newMealDetails;
+    });
+  };
+
   const handleOnSave = async () => {
     const { id, name, ingredients } = editMealState;
     const meal = {
@@ -84,6 +94,7 @@ const EditMeal = () => {
         onPlus={handleOnPlusQty(id)}
         onMinus={handleOnMinusQty(id)}
         onQtyChange={handleOnQtyChange(id)}
+        onDelete={handleOnDelete(id)}
       />
     );
   };
@@ -111,7 +122,7 @@ const EditMeal = () => {
                 icon="plus"
                 size={28}
               />
-              <Text style={style.addIngredientText}>Add</Text>
+              <CCText style={style.addIngredientText}>Add</CCText>
             </TouchableOpacity>
           </Link>
         }
@@ -123,7 +134,7 @@ const EditMeal = () => {
       />
       <View style={style.footer}>
         <TouchableOpacity style={style.updateButton} onPress={handleOnSave}>
-          <Text style={style.updateText}>Save</Text>
+          <CCText style={style.updateText}>Save</CCText>
         </TouchableOpacity>
       </View>
     </View>

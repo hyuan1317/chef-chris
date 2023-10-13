@@ -1,11 +1,6 @@
 import { Link, router, useLocalSearchParams } from "expo-router";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  FlatList,
-  StyleSheet,
-} from "react-native";
+import { View, TouchableOpacity, FlatList, StyleSheet } from "react-native";
+import CCText from "@components/shared/CCText";
 import { useTheme, IconButton } from "react-native-paper";
 import { useEditPlan } from "@components/plans/EditPlanContext";
 import MealCard from "@components/meals/MealCard";
@@ -35,7 +30,7 @@ export default function PlanFormMealList() {
         <Link href={`/plans/${id}/addMeal`} asChild>
           <TouchableOpacity style={style.addButton}>
             <IconButton style={style.addIcon} icon="plus" size={28} />
-            <Text style={style.addText}>Add</Text>
+            <CCText style={style.addText}>Add</CCText>
           </TouchableOpacity>
         </Link>
       }

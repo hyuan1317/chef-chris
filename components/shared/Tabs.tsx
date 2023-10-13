@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from "react";
-import { View, Pressable, Text, StyleSheet } from "react-native";
+import { View, Pressable, StyleSheet } from "react-native";
+import CCText from "./CCText";
 import { useTheme } from "react-native-paper";
 
 interface ITab {
@@ -63,7 +64,7 @@ Tabs.Tab = ({
       style={[style.tab, isActive && style.active]}
       onPress={onSelectTab}
     >
-      <Text style={style.tabTitle}>{name}</Text>
+      <CCText style={style.tabTitle}>{name}</CCText>
     </Pressable>
   );
 };

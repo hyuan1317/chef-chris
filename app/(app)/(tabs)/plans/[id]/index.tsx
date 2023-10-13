@@ -8,11 +8,13 @@ import PlanForm from "@components/plans/PlanForm";
 const EditPlan = () => {
   const { id } = useLocalSearchParams();
   const { plans, editPlan } = usePlan();
-  const { setEditPlanState } = useEditPlan();
+  const { setEditPlanState, reset } = useEditPlan();
 
   useEffect(() => {
     const plan = plans.find((m) => m.id === Number(id));
     setEditPlanState(parsePlan(plan));
+
+    return reset;
   }, []);
 
   const handleOnSave = async (plan: PlanDetail) => {
@@ -29,6 +31,7 @@ const parsePlan = (plan: PlanDetail): EditPlanState => {
     id: plan.id,
     name: plan.name,
     time: plan.time,
+    completed: plan.completed,
     meals: {},
     ingredients: {},
   };

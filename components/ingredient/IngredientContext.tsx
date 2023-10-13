@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useEffect, useState } from "react";
 import * as ingredientService from "@services/ingredientService";
-import { Ingredient } from "../meals/types";
+import { Ingredient } from "../ingredient/types";
 
 interface IngredientContextValue {
   ingredients: Ingredient[];
@@ -47,16 +47,7 @@ export default function IngredientProvider({ children }) {
 
 export const useIngredient = () => {
   const ctx = useContext(IngredientContext);
+  if (!ctx)
+    throw new Error("useIngredient must be used within a IngredientProvider");
   return ctx;
 };
-
-const mockIngredients: Ingredient[] = [
-  {
-    id: 99,
-    name: "Jalapeno",
-  },
-  {
-    id: 100,
-    name: "Potato",
-  },
-];

@@ -1,6 +1,7 @@
 import { TouchableOpacity } from "react-native";
-import { StyleSheet, Text } from "react-native";
-import { Ingredient } from "../meals/types";
+import { StyleSheet } from "react-native";
+import CCText from "@components/shared/CCText";
+import { Ingredient } from "../ingredient/types";
 
 interface IIngredientCard {
   ingredient: Ingredient;
@@ -19,7 +20,7 @@ const IngredientCard = (props: IIngredientCard) => {
       style={style.container}
       onPress={() => onSelect(ingredient)}
     >
-      <Text style={style.title}>{name}</Text>
+      <CCText style={style.title}>{name}</CCText>
     </TouchableOpacity>
   );
 };

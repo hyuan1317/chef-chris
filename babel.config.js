@@ -11,6 +11,7 @@ module.exports = function (api) {
             "@components": "./components",
             "@assets": "./assets",
             "@services": "./services",
+            "@storages": "./storages",
           },
           extensions: [".js", ".jsx", ".ts", ".tsx"],
         },
